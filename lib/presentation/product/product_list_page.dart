@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mitra/presentation/product/product_detail_page.dart';
 
 import '../../domain/usecase/product_usecase.dart';
 import 'bloc/product_bloc.dart';
@@ -50,6 +51,22 @@ class ProductListView extends StatelessWidget {
                   ),
                   title: Text(products[index].title, softWrap: false),
                   subtitle: Text(products[index].price.toString()),
+                  onTap: () =>
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                ProductDetailPage(product: products[index]),
+                        ),
+                      ),
+                  // trailing: const Column(
+                  //   children: [
+                  //     IconButton(
+                  //       onPressed: null,
+                  //       icon: Icon(Icons.details),
+                  //     ),
+                  //     Icon(Icons.details),
+                  //   ],
+                  // ),
                 ),
           );
         }

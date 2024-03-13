@@ -37,8 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.2.0
   flutter_bloc: ^8.1.4
-  hydrated_bloc: ^9.1.4
   path_provider: ^2.1.2
+  isar: ^3.1.0+1
+  build_runner: ^2.4.8
+  isar_generator: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
 
 dev_dependencies:
   flutter_test:

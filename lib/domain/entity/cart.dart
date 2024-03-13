@@ -1,11 +1,17 @@
-import 'package:mitra/domain/entity/product.dart';
+import 'package:isar/isar.dart';
 
+part 'cart.g.dart';
+
+@collection
 class Cart {
+  Id? id;
   final int userId;
-  final List<(Product, int)> products;
+  final int productId;
+  int quantity;
 
   Cart({
     required this.userId,
-    this.products = const [],
+    required this.productId,
+    required this.quantity,
   });
 }
