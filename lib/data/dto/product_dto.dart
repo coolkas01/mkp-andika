@@ -16,12 +16,12 @@ class ProductDto extends Product {
       ProductDto(
         id: json['id'],
         title: json['title'],
-        price: json['price'],
+        price: json['price'] + .0,
         description: json['description'],
         category: json['category'],
         image: json['image'],
         rating: Rating(
-          rate: json['rating']['rate'],
+          rate: json['rating']['rate'] + .0,
           count: json['rating']['count'],
         ),
       );

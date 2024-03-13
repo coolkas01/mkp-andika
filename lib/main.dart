@@ -1,25 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mitra/data/repository/product_repository_impl.dart';
 import 'package:mitra/data/source/network/fake_store_api.dart';
 import 'package:mitra/domain/usecase/product_usecase.dart';
+import 'package:mitra/presentation/product/product_list_page.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+/// [Soal Front End Mobile]
+// Buatlah aplikasi mobile menggunakan api fake store api https://fakestoreapi.com/docs.
+// Ketentuan :
+// 1. Terdapat halaman login (https://fakestoreapi.com/auth/login)
+// 2. Terdapat halaman home (list product)  (https://fakestoreapi.com/products)
+// 3. Terdapat halaman product detail (https://fakestoreapi.com/products/1)
+// 4.Terdapat fiture add to cart (Simpan di local, karena api fakestore tidak bisa beneran add to cart)
+// 5. Terdapat halaman checkout
+// 6. Menggunakan state management BLoC
+// 7. Menerapkan konsep clean architecture
+///
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Andika',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Product(s)'),
     );
   }
 }
@@ -41,37 +58,20 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: const [
+          Icon(Icons.shopping_cart),
+          SizedBox(width: 8.0),
+        ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '1',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final usecase = ProductUsecase(
+        child: ProductListPage(
+          usecase: ProductUsecase(
             repository: ProductRepositoryImpl(
               api: FakeStoreApiImpl(),
             ),
-          );
-
-          final products = await usecase.fetchAllProducts();
-          for (final p in products) {
-            debugPrint(p.toString());
-          }
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          ),
+        ),
+      ),
     );
   }
 }
