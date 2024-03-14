@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mitra/presentation/cart/bloc/cart_bloc.dart';
 import 'package:mitra/presentation/cart/bloc/cart_event.dart';
 import 'package:mitra/presentation/checkout/checkout_item_page.dart';
-
-import '../checkout/bloc/payment_option/payment_option_cubit.dart';
 import 'bloc/cart_state.dart';
 
 class CartItemsListPage extends StatelessWidget {

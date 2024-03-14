@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mitra/domain/repository/auth_repository.dart';
 import 'package:mitra/presentation/auth/bloc/auth_event.dart';
 
 import 'bloc/auth_bloc.dart';

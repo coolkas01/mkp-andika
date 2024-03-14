@@ -9,6 +9,7 @@ import 'package:mitra/data/source/network/fake_store_user_auth_api.dart';
 import 'package:mitra/domain/repository/auth_repository.dart';
 import 'package:mitra/presentation/auth/bloc/auth_bloc.dart';
 import 'package:mitra/presentation/auth/bloc/auth_state.dart';
+import 'package:mitra/presentation/auth/login_page.dart';
 import 'package:mitra/presentation/cart/bloc/cart_bloc.dart';
 import 'package:mitra/presentation/product/product_list_page.dart';
 import 'package:path_provider/path_provider.dart';
@@ -117,23 +118,23 @@ class _AppViewState extends State<AppView> {
       builder: (ctx, child) {
         return BlocListener<AuthBloc, AuthState>(
           listener: (_, state) {
-            // if (state is AuthenticatedState) {
+            if (state is AuthenticatedState) {
               _navigator.pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (_) =>
                   const ProductListPage(),
                 ), (route) => false,
               );
-            // }
+            }
 
-            // if (state is UnauthenticatedState) {
-            //   _navigator.pushAndRemoveUntil(
-            //     MaterialPageRoute(
-            //       builder: (ctx) =>
-            //       const LoginPage(),
-            //     ), (route) => false,
-            //   );
-            // }
+            if (state is UnauthenticatedState) {
+              _navigator.pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (ctx) =>
+                  const LoginPage(),
+                ), (route) => false,
+              );
+            }
           },
           child: child,
         );
