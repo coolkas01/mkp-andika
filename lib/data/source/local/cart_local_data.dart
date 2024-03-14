@@ -8,6 +8,11 @@ abstract class CartLocalData {
     required int productId,
     required int quantity,
   });
+  removeItem({
+    required int userId,
+    required int productId,
+    required int quantity,
+  });
 }
 
 class CartLocalDataImpl implements CartLocalData {
@@ -61,5 +66,29 @@ class CartLocalDataImpl implements CartLocalData {
     }
 
     isar.writeTxn(() => isar.carts.put(item));
+  }
+
+  @override
+  Future<void> removeItem({
+    required int userId,
+    required int productId,
+    required int quantity}) async {
+    final isar = Isar.getInstance();
+    if (isar == null) {
+      return;
+    }
+    final temp = await isar.carts.filter()
+        .userIdEqualTo(userId)
+        .productIdEqualTo(productId)
+        .findFirst();
+    if (temp != null) {
+      if (temp.quantity <= 1) {
+        isar.writeTxn(() => isar.carts.delete(temp.id!));
+        return;
+      }
+
+      temp.quantity = temp.quantity - 1;
+      isar.writeTxn(() => isar.carts.put(temp));
+    }
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mitra/presentation/cart/bloc/cart_bloc.dart';
+import 'package:mitra/presentation/cart/bloc/cart_event.dart';
 
 import '../../domain/entity/product.dart';
 
@@ -10,7 +13,9 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(product.category ?? ''),
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -24,13 +29,14 @@ class ProductDetailPage extends StatelessWidget {
                 Text(product.price.toString(), style: Theme.of(context).textTheme.titleLarge),
                 Text(product.title, style: Theme.of(context).textTheme.titleMedium),
                 Text(product.description ?? ''),
-
               ],
             ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<CartBloc>().add(AddItem(1, product.id));
+          },
           child: const Icon(Icons.add),
         ),
       );

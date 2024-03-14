@@ -1,4 +1,5 @@
 import '../../../domain/entity/cart.dart';
+import '../../../domain/entity/product.dart';
 
 sealed class CartState {}
 
@@ -7,7 +8,7 @@ final class CartInitial extends CartState {}
 final class CartLoading extends CartState {}
 
 final class CartSuccess extends CartState {
-  final List<Cart> items;
+  final List<(Cart, Product)> items;
 
   CartSuccess(this.items);
 }

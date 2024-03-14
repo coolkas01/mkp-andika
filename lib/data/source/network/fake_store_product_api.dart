@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' show Client;
 import 'package:mitra/data/dto/product_dto.dart';
 
-abstract class FakeStoreApi {
+abstract class FSProductApi {
   Future<List<ProductDto>> fetchAllProducts();
 }
 
-class FakeStoreApiImpl implements FakeStoreApi {
+class FSProductApiImpl implements FSProductApi {
   final client = Client();
 
   @override

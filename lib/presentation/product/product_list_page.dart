@@ -1,25 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mitra/presentation/auth/bloc/auth_event.dart';
 import 'package:mitra/presentation/product/product_detail_page.dart';
 
+import '../../data/repository/product_repository_impl.dart';
+import '../../data/source/network/fake_store_product_api.dart';
 import '../../domain/usecase/product_usecase.dart';
+import '../auth/bloc/auth_bloc.dart';
+import '../cart/bloc/cart_bloc.dart';
+import '../cart/bloc/cart_event.dart';
+import '../cart/cart_items_list.dart';
 import 'bloc/product_bloc.dart';
 import 'bloc/product_event.dart';
 import 'bloc/product_state.dart';
 
 class ProductListPage extends StatelessWidget {
-  const ProductListPage({super.key, required this.usecase});
-
-  final ProductUsecase usecase;
+  const ProductListPage({super.key});
   
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
           ProductBloc(
-            usecase: usecase,
+            usecase: ProductUsecase(
+              repository: ProductRepositoryImpl(
+                api: FSProductApiImpl(),
+              ),
+            ),
           )..add(FetchAllProductsEvent()),
-      child: const ProductListView(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          automaticallyImplyLeading: false,
+          title: const Text('Product(s)'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<CartBloc>().add(GetCartItems(1));
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                    const CartItemsListPage(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.shopping_cart),
+            ),
+            IconButton(
+              onPressed: () {
+                context.read<AuthBloc>().add(LogoutRequested());
+
+              },
+              icon: const Icon(Icons.logout),
+            ),
+            // SizedBox(width: 8.0),
+          ],
+        ),
+        body: const Center(
+          child: ProductListView(),
+        ),
+      )
     );
   }
 }
@@ -58,15 +99,6 @@ class ProductListView extends StatelessWidget {
                                 ProductDetailPage(product: products[index]),
                         ),
                       ),
-                  // trailing: const Column(
-                  //   children: [
-                  //     IconButton(
-                  //       onPressed: null,
-                  //       icon: Icon(Icons.details),
-                  //     ),
-                  //     Icon(Icons.details),
-                  //   ],
-                  // ),
                 ),
           );
         }
